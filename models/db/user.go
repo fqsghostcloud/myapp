@@ -18,7 +18,7 @@ type User struct {
 func init() {
 	orm.RegisterModel(new(User))
 	orm.RegisterDriver("mysql", orm.DRMySQL)
-	orm.RegisterDataBase("default", "mysql", "root:123456@tcp(172.16.136.130:3306)/myapp?charset=utf8", 30)
+	orm.RegisterDataBase("default", "mysql", "root:123456@tcp(192.168.34.36:3306)/myapp?charset=utf8", 30)
 	orm.RunSyncdb("default", false, false)
 }
 
