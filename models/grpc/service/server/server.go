@@ -1,11 +1,13 @@
 package server
 
 import (
+	"flag"
 	"fmt"
 	"io"
-	"log"
 	"net"
 	"time"
+
+	"github.com/golang/glog"
 
 	pb "myapp/models/grpc/service/echo"
 
@@ -31,6 +33,7 @@ func (s *echoer) EchoHello(stream pb.Echo_EchoHelloServer) error {
 			return err
 		}
 		if message := in.Message; len(message) > 0 {
+			glog.Infoln(message)
 			if err := stream.Send(&pb.Reply{Message: message}); err != nil {
 				return err
 			}
@@ -46,6 +49,7 @@ func (s *echoer) EchoTime(out *pb.Request, stream pb.Echo_EchoTimeServer) error 
 		timer := time.NewTimer(5 * time.Second)
 		<-timer.C
 		currentTime := time.Now()
+		glog.Infoln(currentTime)
 		if err := stream.Send(&pb.Reply{Message: fmt.Sprint(currentTime)}); err != nil {
 			return err
 		}
@@ -53,18 +57,18 @@ func (s *echoer) EchoTime(out *pb.Request, stream pb.Echo_EchoTimeServer) error 
 }
 
 func Run() {
-
-	fmt.Printf("\n------------begin to run echo service!---------------\n")
+	flag.Parse()
+	glog.Info("\n------------begin to run echo service!---------------\n")
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
-		log.Fatalf("faild to listen: %v", err)
+		glog.Fatalf("faild to listen: %v", err)
 	}
 
 	s := grpc.NewServer()
 	pb.RegisterEchoServer(s, &echoer{})
 	reflection.Register(s)
 	if err := s.Serve(lis); err != nil {
-		log.Fatalf("faild to server: %v", err)
+		glog.Fatalf("faild to server: %v", err)
 	}
 
 }

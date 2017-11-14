@@ -25,6 +25,11 @@ func (this *SignUpController) Get() {
 	this.LayoutSections = make(map[string]string)
 	this.Data["Oem"] = os.Getenv("OEM")
 	this.Data["Ver"] = os.Getenv("VER")
+	this.Layout = "layout.tpl"
+	this.TplName = "signup.tpl"
+	this.LayoutSections = make(map[string]string)
+	this.LayoutSections["AppInfo"] = "appinfo.tpl"
+
 }
 
 func (this *SignUpController) Post() {
