@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
@@ -16,9 +17,13 @@ type User struct {
 }
 
 func init() {
+	endPoint := os.Getenv("MYSQL_IP")
+	fmt.Println(endPoint)
+	url := "root:123456@tcp(" + endPoint + ")/myapp?charset=utf8"
+	fmt.Println(url)
 	orm.RegisterModel(new(User))
 	orm.RegisterDriver("mysql", orm.DRMySQL)
-	orm.RegisterDataBase("default", "mysql", "root:123456@tcp(172.16.136.130:3306)/myapp?charset=utf8", 30)
+	orm.RegisterDataBase("default", "mysql", url, 30)
 	orm.RunSyncdb("default", false, false)
 }
 
