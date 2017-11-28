@@ -57,6 +57,9 @@ http://192.168.34.134:8080/user/profile/
 解决:使用ReadLine()函数，会自动忽略输入时的\r
 ``` 
 ## kubectl命令操作
+```
+EKOS地址:http://192.168.34.132:30000/login
+```
 1. 应用副本数扩展为4个,拓展前
 ```
 [root@node1 ~]# kubectl get pod
